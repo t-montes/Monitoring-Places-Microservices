@@ -4,6 +4,8 @@ from .forms import MeasurementForm
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.conf import settings
+import requests
 
 
 def index(request):
@@ -11,6 +13,12 @@ def index(request):
 
 def MeasurementList(request):
     queryset = Measurement.objects.all().order_by('-dateTime')[:10]
+    r = requests.get(settings.URL_KONG, headers={"Accept":"application/json"})
+    variables = r.json()
+
+    for x in range(0, len(queryset)):
+        var = next(variable for variable in variables if variable["id"] == queryset[x].variable)
+        queryset[x].variable = var["name"]
     context = {
         'measurement_list': queryset
     }
