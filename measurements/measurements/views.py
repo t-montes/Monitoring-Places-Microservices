@@ -30,7 +30,7 @@ def MeasurementCreate(request):
         form = MeasurementForm()
 
     context = {
-        'form': form,
+        'form': form
     }
 
     return render(request, 'Measurement/measurementCreate.html', context)
