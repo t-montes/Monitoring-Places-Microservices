@@ -13,7 +13,7 @@ def index(request):
 
 def MeasurementList(request):
     queryset = Measurement.objects.all().order_by('-dateTime')[:10]
-    r = requests.get(settings.URL_KONG, headers={"Accept":"application/json"})
+    r = requests.get(settings.PATH_VAR, headers={"Accept":"application/json"})
     variables = r.json()
 
     for x in range(0, len(queryset)):

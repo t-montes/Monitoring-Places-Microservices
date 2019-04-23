@@ -140,4 +140,4 @@ STATICFILES_DIRS = (
     os.path.join(PROJECT_ROOT, 'static'),
 )
 
-URL_KONG = "0.0.0.0:8000"
+PATH_VAR = "http://0.0.0.0:8000/variables"
