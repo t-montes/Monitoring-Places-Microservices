@@ -1,19 +1,21 @@
 from django import forms
-from .models import Measurement
+from django.conf import settings
+import requests
 
-class MeasurementForm(forms.ModelForm):
-    class Meta:
-        model = Measurement
-        fields = [
-            'variable',
-            'value',
-            'unit',
-            'place',
-        ]
+def get_variables():
+    r = requests.get(settings.PATH_VAR, headers={"Accept":"application/json"})
+    variables = r.json()
+    Var_Choices = []
+    for variable in variables:
+        Var_Choices.append([variable["id"], variable["name"]])
+    return Var_Choices
 
-        labels = {
-            'variable' : 'Variable',
-            'value' : 'Value',
-            'unit' : 'Unit',
-            'place' : 'Place',
-        }
+class MeasurementForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super(MeasurementForm, self).__init__(*args, **kwargs)
+        self.fields['variable'] = forms.ChoiceField(
+            choices=get_variables() )
+
+    value = forms.FloatField()
+    unit = forms.CharField(max_length=20)
+    place = forms.CharField(max_length=30)

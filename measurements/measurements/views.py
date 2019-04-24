@@ -28,7 +28,11 @@ def MeasurementCreate(request):
     if request.method == 'POST':
         form = MeasurementForm(request.POST)
         if form.is_valid():
-            measurement = form.save()
+            measurement = Measurement()
+            measurement.variable = form.cleaned_data['variable']
+            measurement.value = form.cleaned_data['value']
+            measurement.unit = form.cleaned_data['unit']
+            measurement.place = form.cleaned_data['place']
             measurement.save()
             messages.add_message(request, messages.SUCCESS, 'Measurement create successful')
             return HttpResponseRedirect(reverse('measurementCreate'))
