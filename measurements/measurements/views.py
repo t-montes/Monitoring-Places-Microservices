@@ -1,48 +1,37 @@
 from .models import Measurement
 from django.shortcuts import render, redirect
-from .forms import MeasurementForm
 from django.contrib import messages
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse
+from django.http import JsonResponse
 from django.urls import reverse
 from django.conf import settings
 import requests
+import json
 
-
-def index(request):
-    return render(request, 'index.html')
-
-def MeasurementList(request):
-    queryset = Measurement.objects.all().order_by('-dateTime')[:10]
+def check_variable(data):
     r = requests.get(settings.PATH_VAR, headers={"Accept":"application/json"})
     variables = r.json()
+    for variable in variables:
+        if data["variable"] == variable["id"]:
+            return True
+    return False
 
-    for x in range(0, len(queryset)):
-        var = next(variable for variable in variables if variable["id"] == queryset[x].variable)
-        queryset[x].variable = var["name"]
-    context = {
-        'measurement_list': queryset
-    }
-    return render(request, 'Measurement/measurements.html', context)
+def MeasurementList(request):
+    queryset = Measurement.objects.all()
+    context = list(queryset.values('id', 'variable', 'value', 'unit', 'place', 'dateTime'))
+    return JsonResponse(context, safe=False)
 
 def MeasurementCreate(request):
     if request.method == 'POST':
-        form = MeasurementForm(request.POST)
-        if form.is_valid():
+        data = request.body.decode('utf-8')
+        data_json = json.loads(data)
+        if check_variable(data_json) == True:
             measurement = Measurement()
-            measurement.variable = form.cleaned_data['variable']
-            measurement.value = form.cleaned_data['value']
-            measurement.unit = form.cleaned_data['unit']
-            measurement.place = form.cleaned_data['place']
+            measurement.variable = data_json['variable']
+            measurement.value = data_json['value']
+            measurement.unit = data_json['unit']
+            measurement.place = data_json['place']
             measurement.save()
-            messages.add_message(request, messages.SUCCESS, 'Measurement create successful')
-            return HttpResponseRedirect(reverse('measurementCreate'))
+            return HttpResponse("successfully created measurement")
         else:
-            print(form.errors)
-    else:
-        form = MeasurementForm()
-
-    context = {
-        'form': form
-    }
-
-    return render(request, 'Measurement/measurementCreate.html', context)
+            return HttpResponse("unsuccessfully created measurement. Variable does not exist")
