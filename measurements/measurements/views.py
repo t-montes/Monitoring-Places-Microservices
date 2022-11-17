@@ -35,3 +35,22 @@ def MeasurementCreate(request):
             return HttpResponse("successfully created measurement")
         else:
             return HttpResponse("unsuccessfully created measurement. Variable does not exist")
+
+def MeasurementsCreate(request):
+    if request.method == 'POST':
+        data = request.body.decode('utf-8')
+        data_json = json.loads(data)
+        measurement_list = []
+        for measurement in data_json:
+                    if check_variable(measurement) == True:
+                        db_measurement = Measurement()
+                        db_measurement.variable = measurement['variable']
+                        db_measurement.value = measurement['value']
+                        db_measurement.unit = measurement['unit']
+                        db_measurement.place = measurement['place']
+                        measurement_list.append(db_measurement)
+                    else:
+                        return HttpResponse("unsuccessfully created measurement. Variable does not exist")
+        
+        Measurement.objects.bulk_create(measurement_list)
+        return HttpResponse("successfully created measurements")

@@ -7,4 +7,5 @@ from . import views
 urlpatterns = [
     url(r'^measurements/', views.MeasurementList),
     url(r'^measurementcreate/$', csrf_exempt(views.MeasurementCreate), name='measurementCreate'),
+    url(r'^createmeasurements/$', csrf_exempt(views.MeasurementsCreate), name='createMeasurements'),
 ]
