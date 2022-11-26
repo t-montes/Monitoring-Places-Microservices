@@ -147,6 +147,78 @@
 			]
 		},
 		{
+			"name": "Places",
+			"item": [
+				{
+					"name": "Create Place",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"ML\",\r\n    \"data\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://34.171.66.152:8080/placecreate/",
+							"protocol": "http",
+							"host": [
+								"34",
+								"171",
+								"66",
+								"152"
+							],
+							"port": "8080",
+							"path": [
+								"placecreate",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Places",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"ML\",\r\n    \"data\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://34.171.66.152:8080/places/",
+							"protocol": "http",
+							"host": [
+								"34",
+								"171",
+								"66",
+								"152"
+							],
+							"port": "8080",
+							"path": [
+								"places",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Measurements",
 			"item": [
 				{
