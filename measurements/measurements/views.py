@@ -42,7 +42,7 @@ def MeasurementCreate(request):
             measurement.save()
             return HttpResponse("successfully created measurement")
         else:
-            return HttpResponse("unsuccessfully created measurement. Variable does not exist")
+            return HttpResponse("unsuccessfully created measurement. Variable or Place does not exist")
 
 def MeasurementsCreate(request):
     if request.method == 'POST':
