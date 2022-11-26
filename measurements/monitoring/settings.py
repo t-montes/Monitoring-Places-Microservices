@@ -80,7 +80,7 @@ DATABASES = {
         'NAME': 'measurements_db',
         'USER': 'measurements_user',
         'PASSWORD': 'isis2503',
-        'HOST': '0.0.0.0',
+        'HOST': '10.138.0.8',
         'PORT': '5432',
     }
 }
@@ -133,5 +133,5 @@ STATICFILES_DIRS = (
     os.path.join(PROJECT_ROOT, 'static'),
 )
 
-PATH_VAR = "http://0.0.0.0:8080/variables"
-PATH_PLC = "http://0.0.0.0:8080/places"
+PATH_VAR = "http://35.247.8.159:8080/variables"
+PATH_PLC = "http:/34.82.177.77:8080/places"
